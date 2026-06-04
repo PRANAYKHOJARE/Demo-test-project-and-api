@@ -1,4 +1,3 @@
-import { Category } from "@/routes/api/-menu";
 import { X } from "lucide-react";
 
 interface Props {
@@ -8,24 +7,12 @@ interface Props {
   onClose: () => void;
 }
 
-// Fallback categories
-const CATEGORIES: string[] = [
-   "All",
-  "Starters",
-  "Mains",
-  "Pizza",
-  "Desserts",
-  "Drinks",
-];
+const CATEGORIES = ["All", "Starters", "Mains", "Pizza", "Desserts", "Drinks"];
 
-export function Sidebar({
-  active,
-  onSelect,
-  open,
-  onClose,
-}: Props) {
+export function Sidebar({ active, onSelect, open, onClose }: Props) {
   return (
     <>
+      {/* Backdrop */}
       {open && (
         <div
           className="fixed inset-0 z-30 bg-black/40 md:hidden"
@@ -33,20 +20,20 @@ export function Sidebar({
         />
       )}
 
+      {/* Drawer — mobile only */}
       <aside
-        className={`fixed left-0 top-0 h-full z-40 w-72 bg-white border-r transition-transform duration-300 md:translate-x-0 ${
+        className={`fixed left-0 top-0 h-full z-40 w-64 bg-background border-r border-border transition-transform duration-300 md:hidden ${
           open ? "translate-x-0" : "-translate-x-full"
         }`}
       >
-        <div className="p-4 flex justify-between items-center md:hidden">
-          <span className="font-semibold">Categories</span>
-
-          <button onClick={onClose}>
+        <div className="p-4 flex justify-between items-center border-b border-border">
+          <span className="font-semibold text-foreground">Categories</span>
+          <button onClick={onClose} className="text-muted-foreground hover:text-foreground">
             <X size={20} />
           </button>
         </div>
 
-        <nav className="p-4 flex flex-col gap-2">
+        <nav className="p-3 flex flex-col gap-1">
           {CATEGORIES.map((c) => (
             <button
               key={c}
@@ -54,10 +41,10 @@ export function Sidebar({
                 onSelect(c);
                 onClose();
               }}
-              className={`text-left p-2 rounded transition-colors ${
+              className={`text-left px-3 py-2 rounded-md text-sm transition-colors ${
                 active === c
-                  ? "bg-black text-white"
-                  : "hover:bg-gray-100"
+                  ? "bg-primary text-primary-foreground font-medium"
+                  : "text-foreground hover:bg-muted"
               }`}
             >
               {c}

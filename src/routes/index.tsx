@@ -34,7 +34,6 @@ function MenuPage() {
     return items.filter((i) => {
       const matchesQ = i.name.toLowerCase().includes(query.toLowerCase());
       const matchesC = category === "All" || i.category === category;
-
       return matchesQ && matchesC;
     });
   }, [items, query, category]);
@@ -45,6 +44,8 @@ function MenuPage() {
         query={query}
         onQuery={setQuery}
         onToggleSidebar={() => setSidebarOpen(true)}
+        activeCategory={category}
+        onSelectCategory={setCategory}
       />
 
       <div className="flex">
@@ -55,27 +56,27 @@ function MenuPage() {
           onClose={() => setSidebarOpen(false)}
         />
 
-        <main className="flex-1">
-          <section className="px-6 py-10 md:px-12">
-            <h2 className="text-2xl font-serif">
+        <main className="flex-1 min-w-0">
+          <section className="px-4 py-6 md:px-12 md:py-10">
+            <h2 className="text-xl font-serif md:text-2xl">
               {category === "All" ? "Menu" : category}
             </h2>
 
             {loading ? (
-              <p className="mt-4">Loading...</p>
+              <p className="mt-4 text-sm text-muted-foreground">Loading...</p>
             ) : filtered.length === 0 ? (
-              <p className="mt-4">No items found</p>
+              <p className="mt-4 text-sm text-muted-foreground">No items found</p>
             ) : (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
+              <div className="grid grid-cols-2 gap-3 mt-4 lg:grid-cols-3 md:gap-6 md:mt-6">
                 {filtered.map((item) => (
                   <FoodCard
-  key={item.id}
-  item={item}
-  onClick={async () => {
-    const full = await fetchMenuItem(item.id);
-    setSelected(full);
-  }}
-/>
+                    key={item.id}
+                    item={item}
+                    onClick={async () => {
+                      const full = await fetchMenuItem(item.id);
+                      setSelected(full);
+                    }}
+                  />
                 ))}
               </div>
             )}
